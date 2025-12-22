@@ -32,6 +32,8 @@ Alpine.data("weather", () => ({
       const location = await getLocation();
       const data = await getForecast(location.latitude, location.longitude);
 
+      console.log(data);
+
       this.allData = data;
       this.current = data.current;
       this.setDay(this.dailyIndex);
@@ -153,6 +155,11 @@ Alpine.data("weather", () => ({
   formatHour(date) {
     return date ? format(date, "haaa") : "";
   },
+}));
+
+Alpine.data("settings", () => ({
+  latitude: null,
+  longitude: null,
 }));
 
 Alpine.start();

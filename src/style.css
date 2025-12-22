@@ -192,6 +192,28 @@ button:hover {
   width: 100%;
 }
 
+input {
+  width: 100%;
+  padding: 0.2rem;
+  font-size: inherit;
+  font-weight: 400;
+  border: 2px solid var(--color-border);
+  background-color: var(--color-app-background);
+  color: var(--color-text);
+}
+
+.settings {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.settings-action {
+  grid-column: span 2;
+}
+
 /* mobile first, so these are for larger than phone sized screens */
 @media (min-width: 480px) {
   html {
