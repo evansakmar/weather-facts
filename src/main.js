@@ -12,51 +12,8 @@ if ("serviceWorker" in navigator) {
   registerSW();
 }
 
-Alpine.data("weather", () => ({
-  loading: false,
-  error: null,
-  allData: null,
-  current: null,
-  daily: null,
-  dailyIndex: 0,
-  amCommute: null,
-  pmCommute: null,
-  hourly: [],
-
-  async init() {
-    this.setTheme();
-
-    try {
-      this.loading = true;
-
-      const latitude = localStorage.getItem("latitude");
-      const longitude = localStorage.getItem("longitude");
-
-      if (latitude && longitude) {
-        const parsedLatitude = parseFloat(latitude);
-        const parsedLongitude = parseFloat(longitude);
-
-        const data = await getForecast(parsedLatitude, parsedLongitude);
-        this.allData = data;
-        this.current = data.current;
-        this.setDay(this.dailyIndex);
-      } else {
-        const location = await getLocation();
-        const data = await getForecast(location.latitude, location.longitude);
-
-        this.allData = data;
-        this.current = data.current;
-        this.setDay(this.dailyIndex);
-      }
-    } catch (e) {
-      this.error = "Unable to retrieve weather data.";
-      console.error(e);
-    } finally {
-      this.loading = false;
-    }
-  },
-
-  setTheme() {
+Alpine.store("theme", {
+  init() {
     const setThemeColor = (isDark) => {
       document.documentElement.setAttribute(
         "data-theme",
@@ -73,6 +30,47 @@ Alpine.data("weather", () => ({
     mediaQuery.addEventListener("change", (e) => {
       setThemeColor(e.matches);
     });
+  },
+});
+
+Alpine.store("theme").init();
+
+Alpine.data("weather", () => ({
+  loading: false,
+  error: null,
+  allData: null,
+  current: null,
+  daily: null,
+  dailyIndex: 0,
+  amCommute: null,
+  pmCommute: null,
+  hourly: [],
+
+  async init() {
+    try {
+      this.loading = true;
+
+      const latitude = localStorage.getItem("latitude");
+      const longitude = localStorage.getItem("longitude");
+
+      if (latitude && longitude) {
+        const parsedLatitude = parseFloat(latitude);
+        const parsedLongitude = parseFloat(longitude);
+
+        const data = await getForecast(parsedLatitude, parsedLongitude);
+        this.allData = data;
+        this.current = data.current;
+        this.setDay(this.dailyIndex);
+      } else {
+        // no location set, redirect to settings
+        window.location.href = "/settings.html";
+      }
+    } catch (e) {
+      this.error = "Unable to retrieve weather data.";
+      console.error(e);
+    } finally {
+      this.loading = false;
+    }
   },
 
   setDay(index) {
