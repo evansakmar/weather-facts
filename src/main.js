@@ -29,14 +29,25 @@ Alpine.data("weather", () => ({
     try {
       this.loading = true;
 
-      const location = await getLocation();
-      const data = await getForecast(location.latitude, location.longitude);
+      const latitude = localStorage.getItem("latitude");
+      const longitude = localStorage.getItem("longitude");
 
-      console.log(data);
+      if (latitude && longitude) {
+        const parsedLatitude = parseFloat(latitude);
+        const parsedLongitude = parseFloat(longitude);
 
-      this.allData = data;
-      this.current = data.current;
-      this.setDay(this.dailyIndex);
+        const data = await getForecast(parsedLatitude, parsedLongitude);
+        this.allData = data;
+        this.current = data.current;
+        this.setDay(this.dailyIndex);
+      } else {
+        const location = await getLocation();
+        const data = await getForecast(location.latitude, location.longitude);
+
+        this.allData = data;
+        this.current = data.current;
+        this.setDay(this.dailyIndex);
+      }
     } catch (e) {
       this.error = "Unable to retrieve weather data.";
       console.error(e);
@@ -160,6 +171,30 @@ Alpine.data("weather", () => ({
 Alpine.data("settings", () => ({
   latitude: null,
   longitude: null,
+
+  async init() {
+    this.latitude = localStorage.getItem("latitude");
+    this.longitude = localStorage.getItem("longitude");
+
+    if (!this.latitude || !this.longitude) {
+      const location = await getLocation();
+      this.latitude = location.latitude.toFixed(6);
+      this.longitude = location.longitude.toFixed(6);
+    }
+  },
+
+  async getLocation() {
+    const location = await getLocation();
+    this.latitude = location.latitude.toFixed(6);
+    this.longitude = location.longitude.toFixed(6);
+  },
+
+  saveSettings() {
+    localStorage.setItem("latitude", this.latitude);
+    localStorage.setItem("longitude", this.longitude);
+
+    window.location.href = "/";
+  },
 }));
 
 Alpine.start();
