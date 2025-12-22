@@ -85,8 +85,9 @@ Alpine.data("weather", () => ({
     const now = new Date();
     const selectedDate = parseISO(this.daily.date);
 
+    const amCommuteTimeHour = parseInt(localStorage.getItem("amCommuteTime")) || 7;
     const amCommuteTime = set(selectedDate, {
-      hours: 7,
+      hours: amCommuteTimeHour,
       minutes: 0,
       seconds: 0,
       milliseconds: 0,
@@ -100,8 +101,9 @@ Alpine.data("weather", () => ({
         })
       : null;
 
+    const pmCommuteTimeHour = parseInt(localStorage.getItem("pmCommuteTime")) || 17;
     const pmCommuteTime = set(selectedDate, {
-      hours: 17,
+      hours: pmCommuteTimeHour,
       minutes: 0,
       seconds: 0,
       milliseconds: 0,
@@ -169,10 +171,14 @@ Alpine.data("weather", () => ({
 Alpine.data("settings", () => ({
   latitude: null,
   longitude: null,
+  amCommuteTime: null,
+  pmCommuteTime: null,
 
   async init() {
     this.latitude = localStorage.getItem("latitude");
     this.longitude = localStorage.getItem("longitude");
+    this.amCommuteTime = localStorage.getItem("amCommuteTime") || 7; // Default to 7 AM
+    this.pmCommuteTime = localStorage.getItem("pmCommuteTime") || 17; // Default to 5 PM
 
     if (!this.latitude || !this.longitude) {
       const location = await getLocation();
@@ -190,6 +196,8 @@ Alpine.data("settings", () => ({
   saveSettings() {
     localStorage.setItem("latitude", this.latitude);
     localStorage.setItem("longitude", this.longitude);
+    localStorage.setItem("amCommuteTime", this.amCommuteTime);
+    localStorage.setItem("pmCommuteTime", this.pmCommuteTime);
 
     window.location.href = "/";
   },

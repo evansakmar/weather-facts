@@ -28,6 +28,20 @@
         <label>Longitude:</label>
         <input type="number" step="0.000001" x-model="longitude" />
 
+        <label for="amCommuteTime">AM Commute Time:</label>
+        <select id="amCommuteTime" x-model="amCommuteTime">
+          <template x-for="hour in 24" :key="hour">
+            <option :value="hour - 1" x-text="hour - 1"></option>
+          </template>
+        </select>
+
+        <label for="pmCommuteTime">PM Commute Time:</label>
+        <select id="pmCommuteTime" x-model="pmCommuteTime">
+          <template x-for="hour in 24" :key="hour">
+            <option :value="hour - 1" x-text="hour - 1"></option>
+          </template>
+        </select>
+
         <button class="settings-action" @click="getLocation()">
           Get My Location
         </button>
