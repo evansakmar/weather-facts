@@ -65,6 +65,7 @@ a:visited {
 .facts th {
   font-weight: 400;
   text-align: left;
+  opacity: 0.7;
 }
 
 .facts td {
@@ -192,7 +193,8 @@ button:hover {
   width: 100%;
 }
 
-input {
+input,
+select {
   width: 100%;
   padding: 0.2rem;
   font-size: inherit;
@@ -212,6 +214,12 @@ input {
 
 .settings-action {
   grid-column: span 2;
+  margin-top: 1rem;
+}
+
+.settings h2 {
+  grid-column: span 2;
+  margin-top: 0.5rem;
 }
 
 /* mobile first, so these are for larger than phone sized screens */

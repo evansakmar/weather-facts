@@ -85,7 +85,8 @@ Alpine.data("weather", () => ({
     const now = new Date();
     const selectedDate = parseISO(this.daily.date);
 
-    const amCommuteTimeHour = parseInt(localStorage.getItem("amCommuteTime")) || 7;
+    const amCommuteTimeHour =
+      parseInt(localStorage.getItem("amCommuteTime")) || 7;
     const amCommuteTime = set(selectedDate, {
       hours: amCommuteTimeHour,
       minutes: 0,
@@ -101,7 +102,8 @@ Alpine.data("weather", () => ({
         })
       : null;
 
-    const pmCommuteTimeHour = parseInt(localStorage.getItem("pmCommuteTime")) || 17;
+    const pmCommuteTimeHour =
+      parseInt(localStorage.getItem("pmCommuteTime")) || 17;
     const pmCommuteTime = set(selectedDate, {
       hours: pmCommuteTimeHour,
       minutes: 0,
@@ -179,12 +181,6 @@ Alpine.data("settings", () => ({
     this.longitude = localStorage.getItem("longitude");
     this.amCommuteTime = localStorage.getItem("amCommuteTime") || 7; // Default to 7 AM
     this.pmCommuteTime = localStorage.getItem("pmCommuteTime") || 17; // Default to 5 PM
-
-    if (!this.latitude || !this.longitude) {
-      const location = await getLocation();
-      this.latitude = location.latitude.toFixed(6);
-      this.longitude = location.longitude.toFixed(6);
-    }
   },
 
   async getLocation() {
