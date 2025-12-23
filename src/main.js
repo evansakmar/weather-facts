@@ -63,7 +63,37 @@ Alpine.data("weather", () => ({
         this.setDay(this.dailyIndex);
       } else {
         // no location set, redirect to settings
-        window.location.href = "/settings.html";
+        window.location.href = "settings.html";
+      }
+    } catch (e) {
+      this.error = "Unable to retrieve weather data.";
+      console.error(e);
+    } finally {
+      this.loading = false;
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        this.refreshForecast();
+      }
+    });
+  },
+
+  async refreshForecast() {
+    try {
+      this.loading = true;
+
+      const latitude = localStorage.getItem("latitude");
+      const longitude = localStorage.getItem("longitude");
+
+      if (latitude && longitude) {
+        const parsedLatitude = parseFloat(latitude);
+        const parsedLongitude = parseFloat(longitude);
+
+        const data = await getForecast(parsedLatitude, parsedLongitude);
+        this.allData = data;
+        this.current = data.current;
+        this.setDay(this.dailyIndex);
       }
     } catch (e) {
       this.error = "Unable to retrieve weather data.";
