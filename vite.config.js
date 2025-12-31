@@ -24,6 +24,15 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/api\.open-meteo\.com\/v1\/forecast/,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "forecast-data",
+            },
+          },
+        ],
       },
     }),
   ],
