@@ -12,6 +12,7 @@ const formatForecast = (weatherData) => {
       weatherData.current.weather_code,
     ),
     windSpeed: weatherData.current.wind_speed_10m,
+    uvIndex: weatherData.current.uv_index,
   };
 
   const daily = weatherData.daily.time.map((time, index) => {
@@ -162,6 +163,7 @@ const fetchForecast = async (latitude, longitude) => {
       "apparent_temperature",
       "weather_code",
       "wind_speed_10m",
+      "uv_index"
     ],
     timezone: "America/New_York", // TODO parameterize timezone based on location
     wind_speed_unit: "mph",
@@ -187,6 +189,7 @@ const fetchForecast = async (latitude, longitude) => {
       apparent_temperature: current.variables(2).value(),
       weather_code: current.variables(3).value(),
       wind_speed_10m: current.variables(4).value(),
+      uv_index: current.variables(5).value(),
     },
     hourly: {
       time: Array.from(
