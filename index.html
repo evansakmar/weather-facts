@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/weather-facts/icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#c6c6c6" />
+    <meta name="color-scheme" content="light dark" />
+
+    <title>Weather Facts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/weather-facts/assets/main-CZ7HPMpn.js"></script>
+    <link rel="stylesheet" crossorigin href="/weather-facts/assets/main-XLhVwK-z.css">
+  <link rel="manifest" href="/weather-facts/manifest.webmanifest"></head>
+
+  <body>
+    <div x-data="weather" x-init="init()" class="app">
+      <h1 class="title">Weather Facts</h1>
+
+      <div x-show="loading">Loading...</div>
+      <div x-show="error" x-text="error"></div>
+
+      <template x-if="current">
+        <div>
+          <div class="section-header">
+            <h2 class="facts-label">Currently</h2>
+            <p x-text="current.description"></p>
+          </div>
+
+          <table class="facts">
+            <tr>
+              <th>Temperature</th>
+              <td>
+                <span x-text="formatTemperature(current.temperature)"></span>
+                <span class="sub-info">
+                  /
+                  <span
+                    x-text="formatTemperature(current.temperatureApparent)"
+                  ></span>
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <th>Humidity</th>
+              <td x-text="formatHumidity(current.relativeHumidity)"></td>
+            </tr>
+
+            <tr>
+              <th>Wind</th>
+              <td x-text="formatWind(current.windSpeed)"></td>
+            </tr>
+            <tr>
+              <th>UV Index</th>
+              <td x-text="formatWind(current.uvIndex)"></td>
+            </tr>
+          </table>
+        </div>
+      </template>
+
+      <template x-if="daily">
+        <div class="section">
+          <div class="section-header">
+            <h2 x-text="formatLongDate(daily.date)"></h2>
+            <p x-text="daily.description"></p>
+          </div>
+
+          <table class="facts">
+            <tr>
+              <th>High</th>
+              <td>
+                <span x-text="formatTemperature(daily.temperatureMax)"></span>
+                <span class="sub-info">
+                  /
+                  <span
+                    x-text="formatTemperature(daily.apparentTemperatureMax)"
+                  ></span>
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <th>Low</th>
+              <td>
+                <span x-text="formatTemperature(daily.temperatureMin)"></span>
+                <span class="sub-info">
+                  /
+                  <span
+                    x-text="formatTemperature(daily.apparentTemperatureMin)"
+                  ></span>
+                </span>
+              </td>
+            </tr>
+
+            <tr>
+              <th>Precipitation</th>
+              <td
+                x-text="formatProbability(daily.precipitationProbability)"
+              ></td>
+            </tr>
+          </table>
+
+          <div x-show="amCommute || pmCommute">
+            <div class="section-header section-header_sub">
+              <h2>Commute</h2>
+            </div>
+
+            <div class="commute">
+              <div class="commute-am">
+                <div
+                  x-text="formatHour(amCommute?.time)"
+                  class="hourly-description"
+                ></div>
+                <div x-text="amCommute?.description"></div>
+                <div>
+                  <span
+                    x-text="formatTemperature(amCommute?.temperature)"
+                  ></span
+                  ><span class="sub-info">
+                    /
+                    <span
+                      x-text="formatTemperature(amCommute?.temperatureApparent)"
+                    ></span
+                  ></span>
+                </div>
+                <div
+                  x-text="formatProbability(amCommute?.precipitationProbability)"
+                ></div>
+              </div>
+
+              <div class="commute-pm">
+                <div
+                  x-text="formatHour(pmCommute?.time)"
+                  class="hourly-description"
+                ></div>
+                <div x-text="pmCommute?.description"></div>
+                <div>
+                  <span
+                    x-text="formatTemperature(pmCommute?.temperature)"
+                  ></span
+                  ><span class="sub-info">
+                    /
+                    <span
+                      x-text="formatTemperature(pmCommute?.temperatureApparent)"
+                    ></span
+                  ></span>
+                </div>
+                <div
+                  x-text="formatProbability(pmCommute?.precipitationProbability)"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-header section-header_sub">
+            <h2>Hourly</h2>
+          </div>
+
+          <div class="hourly" x-ref="hourly">
+            <template x-for="hour in hourly">
+              <div class="hourly-item">
+                <div
+                  x-text="formatHour(hour.time)"
+                  class="hourly-description"
+                ></div>
+                <div x-text="hour.description"></div>
+
+                <div>
+                  <div>
+                    <span x-text="formatTemperature(hour.temperature)"></span
+                    ><span class="sub-info"
+                      >/<span
+                        x-text="formatTemperature(hour.temperatureApparent)"
+                      ></span
+                    ></span>
+                  </div>
+                  <div
+                    x-text="formatProbability(hour.precipitationProbability)"
+                  ></div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <div class="actions section">
+        <button @click="previousDay()">Previous</button>
+        <button @click="nextDay()">Next</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>
+        Forecast data provided by
+        <a href="https://open-meteo.com/" target="_blank" rel="noopener"
+          >Open-Meteo</a
+        >.
+      </p>
+      <p><a href="settings.html">Settings</a></p>
+    </footer>
+
+  </body>
+</html>

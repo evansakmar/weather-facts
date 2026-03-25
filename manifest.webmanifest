@@ -1,0 +1,1 @@
+{"name":"Weather Facts","short_name":"Weather","description":"The world's most boring weather app","start_url":"/weather-facts/","display":"standalone","background_color":"#ffffff","theme_color":"#c6c6c6","lang":"en","scope":"/weather-facts/","icons":[{"src":"icon.svg","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}
