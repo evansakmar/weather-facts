@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
-    <script type="module" crossorigin src="/weather-facts/assets/main-CZ7HPMpn.js"></script>
+    <script type="module" crossorigin src="/weather-facts/assets/main-DS0Dmv7X.js"></script>
     <link rel="stylesheet" crossorigin href="/weather-facts/assets/main-XLhVwK-z.css">
   <link rel="manifest" href="/weather-facts/manifest.webmanifest"></head>
 
@@ -57,7 +57,7 @@
             </tr>
             <tr>
               <th>UV Index</th>
-              <td x-text="formatWind(current.uvIndex)"></td>
+              <td x-text="formatUV(current.uvIndex)"></td>
             </tr>
           </table>
         </div>
@@ -104,58 +104,6 @@
               ></td>
             </tr>
           </table>
-
-          <div x-show="amCommute || pmCommute">
-            <div class="section-header section-header_sub">
-              <h2>Commute</h2>
-            </div>
-
-            <div class="commute">
-              <div class="commute-am">
-                <div
-                  x-text="formatHour(amCommute?.time)"
-                  class="hourly-description"
-                ></div>
-                <div x-text="amCommute?.description"></div>
-                <div>
-                  <span
-                    x-text="formatTemperature(amCommute?.temperature)"
-                  ></span
-                  ><span class="sub-info">
-                    /
-                    <span
-                      x-text="formatTemperature(amCommute?.temperatureApparent)"
-                    ></span
-                  ></span>
-                </div>
-                <div
-                  x-text="formatProbability(amCommute?.precipitationProbability)"
-                ></div>
-              </div>
-
-              <div class="commute-pm">
-                <div
-                  x-text="formatHour(pmCommute?.time)"
-                  class="hourly-description"
-                ></div>
-                <div x-text="pmCommute?.description"></div>
-                <div>
-                  <span
-                    x-text="formatTemperature(pmCommute?.temperature)"
-                  ></span
-                  ><span class="sub-info">
-                    /
-                    <span
-                      x-text="formatTemperature(pmCommute?.temperatureApparent)"
-                    ></span
-                  ></span>
-                </div>
-                <div
-                  x-text="formatProbability(pmCommute?.precipitationProbability)"
-                ></div>
-              </div>
-            </div>
-          </div>
 
           <div class="section-header section-header_sub">
             <h2>Hourly</h2>
